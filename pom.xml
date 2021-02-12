@@ -7,7 +7,7 @@
     <version>1.0.1</version>
     <packaging>war</packaging>
 
-    <name>TravisWeek2Day1</name>
+    <name>TravisWeek3Day1</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
