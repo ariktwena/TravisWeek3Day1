@@ -94,6 +94,30 @@ public class MovieDTO {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof MovieDTO)) {
+            return false;
+        }
+
+        MovieDTO movieDTO = (MovieDTO) o;
+
+        if (yearDTO != movieDTO.yearDTO) {
+            return false;
+        }
+        return titleDTO != null ? titleDTO.equals(movieDTO.titleDTO) : movieDTO.titleDTO == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = titleDTO != null ? titleDTO.hashCode() : 0;
+        result = 31 * result + yearDTO;
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "MovieDTO{" + "id=" + id + ", titleDTO=" + titleDTO + ", descriptionDTO=" + descriptionDTO + ", priceDTO=" + priceDTO + ", yearDTO=" + yearDTO + ", actorsDTO=" + actorsDTO + '}';
     }

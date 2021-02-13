@@ -1,6 +1,15 @@
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import dtos.MovieDTO;
 import entities.Movie;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.validation.constraints.AssertTrue;
+import org.junit.jupiter.api.Assertions;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
@@ -36,6 +45,7 @@ public class MovieResourceTest {
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
@@ -156,13 +166,17 @@ public class MovieResourceTest {
         given().log().all().when().get("/movie/all").then().log().body();
     }
 
-//    @Test
-//    public void testAllMovies() {
-//        given()
-//                .when()
-//                .get("/movie/all")
-//                .then()
-//                .assertThat()
-//                .body("title", arrayContainingInAnyOrder("TitleTest1"));
-//    }
+    @Test
+    public void testWithGson() {
+        List<MovieDTO> expected = new ArrayList<>();
+        expected.add(new MovieDTO(r1));
+
+        String json = given().when().get("/movie/year/{year}", 1999).body().print();
+
+        MovieDTO[] mov = GSON.fromJson(json,MovieDTO[].class);
+
+        List<MovieDTO> movs = Arrays.asList(mov.clone());
+
+        Assertions.assertIterableEquals(expected, movs);
+    }
 }
