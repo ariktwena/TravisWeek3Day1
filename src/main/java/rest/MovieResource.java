@@ -22,6 +22,14 @@ public class MovieResource {
     private static final MovieFacade FACADE =  MovieFacade.getMovieFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
      
+    @Path("init")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String createDB() {
+        FACADE.createDB();
+        return "{\"msg\":\"DB created :)\"}";
+    }
+    
     @Path("message")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
