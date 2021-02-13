@@ -1,5 +1,6 @@
 package rest;
 
+import com.google.gson.Gson;
 import entities.Movie;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
@@ -7,7 +8,10 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
+import io.restassured.response.Response;
 import java.net.URI;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
@@ -15,10 +19,16 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
 import static org.hamcrest.Matchers.arrayContainingInAnyOrder;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,8 +79,8 @@ public class MovieResourceTest {
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
-        r1 = new Movie("TitleTest1", "Des1", 34, 1999, new String[]{"Actor1", "Actor2", "Actor3"}, "Private message1");
-        r2 = new Movie("TitleTest2", "Des2", 50, 2010, new String[]{"Actor4", "Actor5", "Actor6"}, "Private message2");
+        r1 = new Movie("TitleTest1", "Test-Des", 50, 1999, new String[]{"Actor1", "Actor2", "Actor3"}, "Private message1");
+        r2 = new Movie("TitleTest2", "Test-Des", 34, 2010, new String[]{"Actor4", "Actor5", "Actor6"}, "Private message2");
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Movie.deleteAllRows").executeUpdate();
@@ -138,7 +148,7 @@ public class MovieResourceTest {
                 .assertThat()
                 .body("actorsDTO[0][0]", equalToIgnoringCase("Actor1"));
     }
-    
+
     @Test
     public void testActorArray2() {
         given()
@@ -146,23 +156,65 @@ public class MovieResourceTest {
                 .get("/movie/year/{year}", 1999)
                 .then()
                 .assertThat()
-                .body("actorsDTO[0][0]", equalToIgnoringCase("Actor1"), 
-                        "actorsDTO[0][1]", equalToIgnoringCase("Actor2"), 
+                .body("actorsDTO[0][0]", equalToIgnoringCase("Actor1"),
+                        "actorsDTO[0][1]", equalToIgnoringCase("Actor2"),
                         "actorsDTO[0][2]", equalToIgnoringCase("Actor3"));
     }
-
+    
     @Test
     public void testSeLog() throws Exception {
         given().log().all().when().get("/movie/all").then().log().body();
     }
-
-//    @Test
-//    public void testAllMovies() {
-//        given()
-//                .when()
-//                .get("/movie/all")
-//                .then()
-//                .assertThat()
-//                .body("title", arrayContainingInAnyOrder("TitleTest1"));
-//    }
+    
+    @Test
+    public void testAllMovies() {
+        given()
+                .when()
+                .get("/movie/all")
+                .then()
+                .assertThat()
+                .body("title", hasItem("TitleTest1"),
+                        "title", hasItem("TitleTest2"));
+    }
+    
+    @Test
+    public void testSizeOfJSONCollection1() {
+        given()
+                .when()
+                .get("/movie/all")
+                .then()
+                .assertThat()
+                .body("title", hasSize(2));
+    }
+    
+    @Test
+    public void testSizeOfJSONCollection2() {
+        given()
+                .when()
+                .get("/movie/all")
+                .then()
+                .assertThat()
+                .body("$", hasSize(2));
+    }
+    
+    @Test
+    public void testCheckScpecificDescription() {
+        given()
+                .when()
+                .get("/movie/all")
+                .then()
+                .assertThat()
+                .body("description[0]", equalTo("Test-Des"));
+    }
+    
+    @Test
+    public void testNotEqualsTo() {
+        given()
+                .when()
+                .get("/movie/all")
+                .then()
+                .assertThat()
+                .body("title[0]", not(equalTo("It's not this!!")));
+    }
+    
 }
