@@ -4,6 +4,8 @@ import entities.Movie;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
+import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import java.net.URI;
 import javax.persistence.EntityManager;
@@ -13,7 +15,10 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.arrayContainingInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,8 +69,8 @@ public class MovieResourceTest {
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
-        r1 = new Movie("TitleTest1", "Des1", 34, 1999);
-        r2 = new Movie("TitleTest2", "Des2", 34, 1999);
+        r1 = new Movie("TitleTest1", "Des1", 34, 1999, new String[]{"Actor1", "Actor2", "Actor3"}, "Private message1");
+        r2 = new Movie("TitleTest2", "Des2", 50, 2010, new String[]{"Actor4", "Actor5", "Actor6"}, "Private message2");
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Movie.deleteAllRows").executeUpdate();
@@ -78,29 +83,86 @@ public class MovieResourceTest {
     }
 
     @Test
+    public void testIfJSON() {
+        given().when().get("/movie/all").then().assertThat().contentType(ContentType.JSON);
+    }
+
+    @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
         given().when().get("/movie/all").then().statusCode(200);
     }
 
-//    //This test assumes the database contains two rows
+    //This test assumes the database contains two rows
+    @Test
+    public void testCount() throws Exception {
+        given()
+                .contentType("application/json")
+                .get("/movie/count").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("count", equalTo(2));
+    }
+
+    @Test
+    public void testSeLogYear() throws Exception {
+        given().log().all().when().get("/movie/year/{year}", 1999).then().log().body();
+    }
+
+    @Test
+    public void testYearData1() {
+        given()
+                .when()
+                .get("/movie/year/{year}", 1999)
+                .then()
+                .assertThat()
+                .body("titleDTO[0]", equalToIgnoringCase("TitleTest1"));
+    }
+
+    @Test
+    public void testYearData2() throws Exception {
+        given()
+                .contentType("application/json")
+                .get("/movie/year/{year}", 1999).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("titleDTO[0]", equalToIgnoringCase("TitleTest1"));
+    }
+
+    @Test
+    public void testActorArray1() {
+        given()
+                .when()
+                .get("/movie/year/{year}", 1999)
+                .then()
+                .assertThat()
+                .body("actorsDTO[0][0]", equalToIgnoringCase("Actor1"));
+    }
+    
+    @Test
+    public void testActorArray2() {
+        given()
+                .when()
+                .get("/movie/year/{year}", 1999)
+                .then()
+                .assertThat()
+                .body("actorsDTO[0][0]", equalToIgnoringCase("Actor1"), 
+                        "actorsDTO[0][1]", equalToIgnoringCase("Actor2"), 
+                        "actorsDTO[0][2]", equalToIgnoringCase("Actor3"));
+    }
+
+    @Test
+    public void testSeLog() throws Exception {
+        given().log().all().when().get("/movie/all").then().log().body();
+    }
+
 //    @Test
-//    public void testDummyMsg() throws Exception {
+//    public void testAllMovies() {
 //        given()
-//                .contentType("application/json")
-//                .get("/xxx/").then()
+//                .when()
+//                .get("/movie/all")
+//                .then()
 //                .assertThat()
-//                .statusCode(HttpStatus.OK_200.getStatusCode())
-//                .body("msg", equalTo("Hello World"));
-//    }
-//
-//    @Test
-//    public void testCount() throws Exception {
-//        given()
-//                .contentType("application/json")
-//                .get("/xxx/count").then()
-//                .assertThat()
-//                .statusCode(HttpStatus.OK_200.getStatusCode())
-//                .body("count", equalTo(2));
+//                .body("title", arrayContainingInAnyOrder("TitleTest1"));
 //    }
 }

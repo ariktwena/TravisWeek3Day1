@@ -39,7 +39,7 @@ public class MovieFacade {
     }
     
     public MovieDTO createFromMovieDTO(MovieDTO movieDTO){
-        Movie movie = new Movie(movieDTO.getTitleDTO(), movieDTO.getDescriptionDTO());
+        Movie movie = new Movie(movieDTO.getTitleDTO(), movieDTO.getDescriptionDTO(), movieDTO.getPriceDTO(), movieDTO.getYearDTO(), movieDTO.getActorsDTO());
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -68,11 +68,21 @@ public class MovieFacade {
         return new MovieDTO(em.find(Movie.class, id));
     }
     
-    public MovieDTO getMovieDTOByYear(int year){
+    public List<MovieDTO> getMovieDTOByYear(int year){
         EntityManager em = emf.createEntityManager();
         try{
-            Movie movie = (Movie)em.createQuery("SELECT movie FROM Movie movie WHERE movie.year = :year").setParameter("year", year).getSingleResult();
-            return new MovieDTO(movie);
+            List<Movie> movies = (List<Movie>)em.createQuery("SELECT movie FROM Movie movie WHERE movie.year = :year").setParameter("year", year).getResultList();
+            return MovieDTO.convertMovieListToDTO(movies);
+        }finally{  
+            em.close();
+        }
+    }
+    
+    public List<MovieDTO> getMovieDTOByPrice(double price){
+        EntityManager em = emf.createEntityManager();
+        try{
+            List<Movie> movies = (List<Movie>)em.createQuery("SELECT movie FROM Movie movie WHERE movie.price = :price").setParameter("price", price).getResultList();
+            return MovieDTO.convertMovieListToDTO(movies);
         }finally{  
             em.close();
         }

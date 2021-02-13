@@ -18,22 +18,26 @@ public class MovieDTO {
     private long id;
     private String titleDTO;
     private String descriptionDTO;
+    private double priceDTO;
+    private int yearDTO;
+    private String[] actorsDTO;
+    
 
     public MovieDTO(Movie movie) {
         this.id = movie.getId();
         this.titleDTO = movie.getTitle();
         this.descriptionDTO = movie.getDescription();
+        this.priceDTO = movie.getPrice();
+        this.yearDTO = movie.getYear();
+        this.actorsDTO = movie.getActors();
     }
 
-    public MovieDTO(long id, String titleDTO, String descriptionDTO) {
-        this.id = id;
+    public MovieDTO(String titleDTO, String descriptionDTO, double priceDTO, int yearDTO, String[] actorsDTO) {
         this.titleDTO = titleDTO;
         this.descriptionDTO = descriptionDTO;
-    }
-
-    public MovieDTO(String titleDTO, String descriptionDTO) {
-        this.titleDTO = titleDTO;
-        this.descriptionDTO = descriptionDTO;
+        this.priceDTO = priceDTO;
+        this.yearDTO = yearDTO;
+        this.actorsDTO = actorsDTO;
     }
     
     public static List<MovieDTO> convertMovieListToDTO(List<Movie> movies){
@@ -65,9 +69,33 @@ public class MovieDTO {
         this.descriptionDTO = descriptionDTO;
     }
 
+    public double getPriceDTO() {
+        return priceDTO;
+    }
+
+    public void setPriceDTO(double priceDTO) {
+        this.priceDTO = priceDTO;
+    }
+
+    public int getYearDTO() {
+        return yearDTO;
+    }
+
+    public void setYearDTO(int yearDTO) {
+        this.yearDTO = yearDTO;
+    }
+
+    public String[] getActorsDTO() {
+        return actorsDTO;
+    }
+
+    public void setActorsDTO(String[] actorsDTO) {
+        this.actorsDTO = actorsDTO;
+    }
+
     @Override
     public String toString() {
-        return "MovieDTO{" + "id=" + id + ", titleDTO=" + titleDTO + ", descriptionDTO=" + descriptionDTO + '}';
+        return "MovieDTO{" + "id=" + id + ", titleDTO=" + titleDTO + ", descriptionDTO=" + descriptionDTO + ", priceDTO=" + priceDTO + ", yearDTO=" + yearDTO + ", actorsDTO=" + actorsDTO + '}';
     }
-  
+
 }

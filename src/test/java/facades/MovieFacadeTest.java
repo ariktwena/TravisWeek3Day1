@@ -1,7 +1,9 @@
 package facades;
 
+import dtos.MovieDTO;
 import utils.EMF_Creator;
 import entities.Movie;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -40,8 +42,8 @@ public class MovieFacadeTest {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Movie.deleteAllRows").executeUpdate();
-            em.persist(new Movie("TitleTest1", "Des1", 34, 1999));
-            em.persist(new Movie("TitleTest2", "Des2", 34, 1999));
+            em.persist(new Movie("TitleTest1", "Des1", 34, 1999, new String[] {"Actor1", "Actor2", "Actor3"}, "Private message1"));
+            em.persist(new Movie("TitleTest2", "Des2", 50, 2010, new String[] {"Actor4", "Actor5", "Actor6"}, "Private message2"));
 
             em.getTransaction().commit();
         } finally {
@@ -56,9 +58,22 @@ public class MovieFacadeTest {
 
     // TODO: Delete or change this method 
     @Test
-    public void testAFacadeMethod() {
+    public void getObjectCount() {
         assertEquals(2, facade.getMovieCount(), "Expects two rows in the database");
     }
     
-
+    @Test
+    public void getYear(){
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("Movie.deleteAllRows").executeUpdate();
+            em.persist(new Movie("TitleTest1", "Des1", 34, 1999, new String[] {"Actor1", "Actor2", "Actor3"}, "Private message1"));
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        List<MovieDTO> movieDTOs = facade.getMovieDTOByYear(1999);
+        assertEquals("TitleTest1", movieDTOs.get(0).getTitleDTO(), "Expects title TitleTest1");
+    }
 }

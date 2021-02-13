@@ -67,7 +67,15 @@ public class MovieResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getMovieByYear(@PathParam("year") int year) {
-        MovieDTO movieDTO = FACADE.getMovieDTOByYear(year);
-        return new Gson().toJson(movieDTO);
+        List<MovieDTO> movieDTOs = FACADE.getMovieDTOByYear(year);
+        return new Gson().toJson(movieDTOs);
+    }
+    
+    @Path("price/{price}") //VIGTIGT
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getMovieByPrice(@PathParam("price") long price) {
+        List<MovieDTO> movieDTOs = FACADE.getMovieDTOByPrice(price);
+        return new Gson().toJson(movieDTOs);
     }
 }
