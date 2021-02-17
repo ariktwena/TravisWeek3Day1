@@ -27,6 +27,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItemInArray;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import org.junit.jupiter.api.AfterAll;
@@ -156,9 +157,10 @@ public class MovieResourceTest {
                 .get("/movie/year/{year}", 1999)
                 .then()
                 .assertThat()
-                .body("actorsDTO[0][0]", equalToIgnoringCase("Actor1"),
-                        "actorsDTO[0][1]", equalToIgnoringCase("Actor2"),
-                        "actorsDTO[0][2]", equalToIgnoringCase("Actor3"));
+//                .body("actorsDTO[0][0]", equalToIgnoringCase("Actor1"),
+//                        "actorsDTO[0][1]", equalToIgnoringCase("Actor2"),
+//                        "actorsDTO[0][2]", equalToIgnoringCase("Actor3"));
+                .body("actorsDTO[0]", hasItem("Actor1"));
     }
     
     @Test
