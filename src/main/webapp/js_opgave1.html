@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+        <title>JSON</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+
+                </div>
+                <div class="col-sm-8">
+                    <br>
+                    <h1 style="text-align: center">Uge 3 Flow 1</h1>
+                    <br>
+                    <p style="text-align: center">Husk at åbne konsollen og tjek resultatet :)</p>
+
+
+                    <pre>
+  <code>
+   /* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+//Function Declaration
+//Observe: no return type, no type on parameters
+function add(n1, n2) {
+    return n1 + n2;
+}
+;
+
+//Function Expression
+var sub = function (n1, n2) {
+    return n1 - n2;
+};
+
+//Callback example
+var cb = function (n1, n2, callback) {
+    return "Result from the two numbers: " + n1 + "+" + n2 + "=" + callback(n1, n2);
+};
+
+console.log("Callback");
+console.log(add(1, 2)); //Den ligger de to tal sammen
+console.log(add); //Den kalder add funktionen, men der er ikke variabler i den, så den udfører intet
+console.log(add(1, 2, 3)); //Der mangler et tal i add funktionen, så den ser bort fra den sidste variable
+console.log(add(1)); //Den mangler en variable for at udføre funktionen og derfor får vi NaN
+console.log(cb(3, 3, add)); //Vi giver "add" funktionen med som callback, som bliver afviklet i funktionen "cb": Result from the two numbers: 3 + 3 = 6
+console.log(cb(4, 3, sub)); //Vi giver "sub" funktionen med som callback, som bliver afviklet i funktionen "cb": Result from the two numbers: 4 - 3 = 1
+//console.log(cb(3,3,add())); //Callback er ikke en funktion da den ikke opfylder funktionskriterierne
+console.log(cb(3, "hh", add)); //Den ændre datatypen til String da "hh" er string og sææter det sammen med 3:Result from the two numbers: 3 + hh = 3hh
+
+
+
+
+console.log("Rette Callback");
+//Callback example
+var cbNew1 = function (n1, n2, callback) {
+    if (isNaN(n1) || typeof n2 !== 'number') {
+        throw 'Parameter is not a number!';
+    } else if (typeof callback !== 'function') {
+        throw 'Callback is not a function!';
+    }
+    return "Result from the two numbers: " + n1 + "+" + n2 + "=" + callback(n1, n2);
+
+};
+
+try {
+    console.log(cbNew1(3, "hh", add()));
+} catch (e) {
+    console.error(e);
+    console.error(e.name + ': ' + e.message);
+}
+
+try {
+    console.log(cbNew1(3, 5, add()));
+} catch (e) {
+    console.error(e);
+    console.error(e.name + ': ' + e.message);
+}
+
+
+console.log("Callback med mul");
+const mul = function (a, b) {
+    return a * b;
+};
+
+var cbNew2 = function (n1, n2, callback) {
+    if (isNaN(n1) || typeof n2 !== 'number') {
+        throw 'Parameter is not a number!';
+    } else if (typeof callback !== 'function') {
+        throw 'Callback is not a function!';
+    }
+    return "Result from the two numbers: " + n1 + "*" + n2 + "=" + callback(n1, n2);
+
+};
+
+try {
+    console.log(cbNew2(3, 5, mul));
+} catch (e) {
+    console.error(e);
+    console.error(e.name + ': ' + e.message);
+}
+
+
+console.log("Callback ananymus function");
+const divider = (a, b) => {
+    return a / b;
+};
+
+var cbNew3 = function (n1, n2, callback) {
+    if (isNaN(n1) || typeof n2 !== 'number') {
+        throw 'Parameter is not a number!';
+    } else if (typeof callback !== 'function') {
+        throw 'Callback is not a function!';
+    }
+    return "Result from the two numbers: " + n1 + "/" + n2 + "=" + callback(n1, n2);
+
+};
+
+try {
+    console.log(cbNew3(4, 2, divider));
+} catch (e) {
+    console.error(e);
+    console.error(e.name + ': ' + e.message);
+}
+
+
+console.log("Callback with array: filter");
+var nameArray = ["Lars", "Jan", "Peter", "Bo", "Frederik"];
+console.log(nameArray);
+
+var convertArray = function (array, callback) {
+    if (!Array.isArray(array)) {
+        throw 'Parameter is not an array!';
+    } else if (typeof callback !== 'function') {
+        throw 'Callback is not a function!';
+    }
+    return callback(array);
+};
+
+var filterArray = array => {
+    let newArray = array.filter(currentElement => currentElement.length <= 3);
+    return newArray;
+};
+
+try {
+    console.log(convertArray(nameArray, filterArray));
+} catch (e) {
+    console.error(e);
+    console.error(e.name + ': ' + e.message);
+}
+
+
+console.log("Callback with array: forEach");
+var nameArray1 = ["Lars", "Jan", "Peter", "Bo", "Frederik"];
+console.log(nameArray);
+nameArray1.forEach(currentElement => console.log(currentElement));
+
+var convertArray1 = function (array, callback) {
+    if (!Array.isArray(array)) {
+        throw 'Parameter is not an array!';
+    } else if (typeof callback !== 'function') {
+        throw 'Callback is not a function!';
+    }
+    return callback(array);
+};
+
+var forEachArray = array => {
+    array.forEach(currentElement => console.log(currentElement));
+};
+
+try {
+    convertArray1(nameArray1, forEachArray);
+} catch (e) {
+    console.error(e);
+    console.error(e.name + ': ' + e.message);
+}
+
+
+console.log("Map array");
+var nameArray2 = ["Lars", "Jan", "Peter", "Bo", "Frederik"];
+const upperCaseArray = nameArray2.map(currentElement => currentElement.toUpperCase());
+console.log(upperCaseArray);
+
+
+console.log("HTML array");
+var nameArray = ["Lars", "Peter", "Jan", "Ian"];
+var html = nameArray.join('</li><li>');
+console.log(html);
+var htmlArray = ['<ul><li>', html, '</li><ul>'];
+console.log(htmlArray);
+htmlArray = htmlArray.join('');
+console.log(htmlArray);
+
+
+
+console.log("Car array");
+var cars = [
+    {id: 1, year: 1997, make: 'Ford', model: 'E350', price: 3000},
+    {id: 2, year: 1999, make: 'Chevy', model: 'Venture', price: 4900},
+    {id: 3, year: 2000, make: 'Chevy', model: 'Venture', price: 5000},
+    {id: 4, year: 1996, make: 'Jeep', model: 'Grand Cherokee', price: 4799}, {id: 5, year: 2005, make: 'Volvo', model: 'V70', price: 44799}
+];
+console.log(cars);
+console.log(cars.filter(currentElement => currentElement.year > 1999));
+console.log(cars.filter(currentElement => currentElement.make === 'Volvo'));
+console.log(cars.filter(currentElement => currentElement.price < 5000));
+
+
+console.log("Make INSERT array");
+
+var cars1 = [
+    {id: 1, year: 1997, make: 'Ford', model: 'E350', price: 3000},
+    {id: 2, year: 1999, make: 'Chevy', model: 'Venture', price: 4900},
+    {id: 3, year: 2000, make: 'Chevy', model: 'Venture', price: 5000},
+    {id: 4, year: 1996, make: 'Jeep', model: 'Grand Cherokee', price: 4799}, {id: 5, year: 2005, make: 'Volvo', model: 'V70', price: 44799}
+];
+
+
+console.log("--> INSERT object");
+var makeInsertFromObject = function (object) {
+    if (typeof object !== 'object') {
+        throw 'Parameter is not an object!';
+    }
+    return "INSERT INTO cars (id,year,make,model,price) VALUES (" + object.id + "," + object.year + "," + `'${object.make}'` + "," + `'${object.model}'` + "," + object.price + ");";
+};
+
+var mapANewArray = array => {
+    let newMapedArray = array.map(currentElement => [currentElement.id, currentElement.year, `'${currentElement.make}'`, `'${currentElement.model}'`, currentElement.price]);
+    return newMapedArray;
+};
+console.log(mapANewArray(cars1));
+console.log(cars1[0]);
+console.log(makeInsertFromObject(cars1[0]));
+
+
+console.log("--> INSERT array");
+var makeInsertFromArray = function (array, callback) {
+    if (!Array.isArray(array)) {
+        throw 'Parameter is not an array!';
+    } else if (typeof callback !== 'function') {
+        throw 'Callback is not a function!';
+    }
+
+    const mappedArray = callback(array);
+
+    mappedArray.forEach(currentElement => console.log(currentElement));
+
+};
+
+var mapANewArray1 = array => {
+    let newMapedArray = array.map(array => "INSERT INTO cars (id,year,make,model,price) VALUES (" + array.id + "," + array.year + "," + `'${array.make}'` + "," + `'${array.model}'` + "," + array.price + ");");
+    return newMapedArray;
+};
+console.log(mapANewArray1(cars1));
+makeInsertFromArray(cars1, mapANewArray1);
+
+
+
+
+console.log("Asynchronous Callbacks");
+var msgPrinter = function (msg, delay) {
+    setTimeout(function () {
+        console.log(msg);
+    }, delay);
+};
+console.log("aaaaaaaaaa"); //Will execute first
+msgPrinter("bbbbbbbbbb", 2000); //Will wait 2 seconds
+console.log("dddddddddd"); //Will execute second
+msgPrinter("eeeeeeeeee", 1000); //Will wait 1 seconds
+console.log("ffffffffff"); //Will execute third
+
+
+
+console.log("constructor functions");
+
+function Person(name) {
+    this.name = name;
+    console.log("Name: " + this.name);
+    setTimeout(function () {
+        console.log("Hi " + this.name); //Explain this - it takes the "name" from the function scope. We need to use super or bind()???
+    }, 2000);
+}
+Person("Kurt Wonnegut"); //This calls the function 
+Person("Arik"); //This calls the function 
+console.log("I'm global: " + name); //Explain this - This is the last "name" set in the memory for the PERSON instance
+
+//***************
+var p = new Person("Kurt Wonnegut"); //Create an instance using the constructor function 
+console.log("I'm global: " + name); //The instance does NOT set the global state/name
+
+console.log("Access 'this'");
+function Person1(name) {
+    this.name = name;
+    var self = this; //var cab be used cross scoop
+    console.log("Name: " + this.name);
+    setTimeout(function () {
+        console.log("Hi " + self.name);
+    }, 2000);
+}
+Person1("Niels"); //This calls the function 
+
+console.log("Access 'bind()'");
+function Person2(name1) {
+    this.name1 = name1;
+    console.log("Name: " + this.name1);
+    setTimeout(function () {
+        console.log("Hi " + this.name1);
+    }.bind(this), 2000); //We bind the function to "this", it's parent 
+}
+Person2("James"); //This calls the function 
+
+
+console.log("Bind");
+var greeter = function () {
+    console.log(this.message);
+};
+var comp1 = {message: "Hello World"};
+var comp2 = {message: "Hi"};
+var g1 = greeter.bind(comp1);//We can store a reference, with a specific “this” to use 
+var g2 = greeter.bind(comp2);//And here another “this”
+setTimeout(g1, 500);
+setTimeout(g2, 1000);
+
+
+console.log("Object1");
+var object = {
+    'firstname': 'Arik',
+    'birthday': '28-04-198',
+    'age': 40,
+    'hobby': 'programming'
+};
+console.log(object);
+
+for (prop in object) {
+    console.log(prop, object[prop]);
+}
+
+
+console.log("Object2");
+class Object {
+    constructor(firstname, birthday, age, hobby) {
+        this.firstname = firstname;
+        this.birthday = birthday;
+        this.age = age;
+        this.hobby = hobby;
+    }
+}
+var object1 = new Object('Arik', '28-04-1980', 40, 'Programming');
+console.log(object1);
+
+for (prop in object1) {
+    console.log(prop, object1[prop]);
+}
+
+
+console.log("Delete property from object");
+var object2 = new Object('TestUser', '01-01-2000', 40, 'Delete this');
+console.log(object2);
+console.log(object2.hobby);
+delete object2.hobby;
+console.log(object2);
+
+console.log("Adding property to object");
+object2.nationality = "English";
+console.log(object2);
+
+
+console.log("Cunstructor");
+class PersonNew {
+    constructor(firstName, lastName, age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+    }
+}
+var person = new PersonNew('FirstName', 'LastName', 40);
+console.log(person);
+
+for (prop in person) {
+    console.log(prop, person[prop]);
+}
+
+
+
+
+
+console.log("Module Pattern");
+function EmployeeDetails() {
+    let nameEmployee = "Mayank";
+    let age = 30;
+    let designation = "Developer";
+    const setName = function (nameEmployee) {
+        this.nameEmployee = nameEmployee;
+    };
+    const setAge = function (age) {
+        this.age = age;
+    };
+
+    const getInfo = function (nameEmployee, age) {
+        this.nameEmployee = nameEmployee;
+        this.age = age;
+
+        return `${this.nameEmployee}, ${this.age}`;
+    };
+
+    const getInfo2 = function (newEmployee) {
+        console.log(`${newEmployee.nameEmployee}, ${newEmployee.age}`);
+    };
+
+    return {
+        nameEmployee: nameEmployee,
+        age: age,
+        designation: designation,
+        setName: setName,
+        setAge: setAge,
+        getInfo: getInfo,
+        getInfo2: getInfo2
+    };
+}
+;
+
+var newEmployee = EmployeeDetails();
+console.log(newEmployee);
+console.log(newEmployee.nameEmployee);
+console.log(newEmployee.age);
+newEmployee.setName("John");
+newEmployee.setAge(98);
+console.log(newEmployee);
+console.log(newEmployee.nameEmployee);
+console.log(newEmployee.age);
+console.log(newEmployee.getInfo(newEmployee.nameEmployee, newEmployee.age));
+newEmployee.getInfo2(newEmployee);
+
+  </code>
+                                        </pre>
+
+
+                                        <script>
+                                            /* 
+                                             * To change this license header, choose License Headers in Project Properties.
+                                             * To change this template file, choose Tools | Templates
+                                             * and open the template in the editor.
+                                             */
+
+                    //Function Declaration
+                    //Observe: no return type, no type on parameters
+                                            function add(n1, n2) {
+                                                return n1 + n2;
+                                            }
+                                            ;
+
+                    //Function Expression
+                                            var sub = function (n1, n2) {
+                                                return n1 - n2;
+                                            };
+
+                    //Callback example
+                                            var cb = function (n1, n2, callback) {
+                                                return "Result from the two numbers: " + n1 + "+" + n2 + "=" + callback(n1, n2);
+                                            };
+
+                                            console.log("Callback");
+                                            console.log(add(1, 2)); //Den ligger de to tal sammen
+                                            console.log(add); //Den kalder add funktionen, men der er ikke variabler i den, så den udfører intet
+                                            console.log(add(1, 2, 3)); //Der mangler et tal i add funktionen, så den ser bort fra den sidste variable
+                                            console.log(add(1)); //Den mangler en variable for at udføre funktionen og derfor får vi NaN
+                                            console.log(cb(3, 3, add)); //Vi giver "add" funktionen med som callback, som bliver afviklet i funktionen "cb": Result from the two numbers: 3 + 3 = 6
+                                            console.log(cb(4, 3, sub)); //Vi giver "sub" funktionen med som callback, som bliver afviklet i funktionen "cb": Result from the two numbers: 4 - 3 = 1
+                    //console.log(cb(3,3,add())); //Callback er ikke en funktion da den ikke opfylder funktionskriterierne
+                                            console.log(cb(3, "hh", add)); //Den ændre datatypen til String da "hh" er string og sææter det sammen med 3:Result from the two numbers: 3 + hh = 3hh
+
+
+
+
+                                            console.log("Rette Callback");
+                    //Callback example
+                                            var cbNew1 = function (n1, n2, callback) {
+                                                if (isNaN(n1) || typeof n2 !== 'number') {
+                                                    throw 'Parameter is not a number!';
+                                                } else if (typeof callback !== 'function') {
+                                                    throw 'Callback is not a function!';
+                                                }
+                                                return "Result from the two numbers: " + n1 + "+" + n2 + "=" + callback(n1, n2);
+
+                                            };
+
+                                            try {
+                                                console.log(cbNew1(3, "hh", add()));
+                                            } catch (e) {
+                                                console.error(e);
+                                                console.error(e.name + ': ' + e.message);
+                                            }
+
+                                            try {
+                                                console.log(cbNew1(3, 5, add()));
+                                            } catch (e) {
+                                                console.error(e);
+                                                console.error(e.name + ': ' + e.message);
+                                            }
+
+
+                                            console.log("Callback med mul");
+                                            const mul = function (a, b) {
+                                                return a * b;
+                                            };
+
+                                            var cbNew2 = function (n1, n2, callback) {
+                                                if (isNaN(n1) || typeof n2 !== 'number') {
+                                                    throw 'Parameter is not a number!';
+                                                } else if (typeof callback !== 'function') {
+                                                    throw 'Callback is not a function!';
+                                                }
+                                                return "Result from the two numbers: " + n1 + "*" + n2 + "=" + callback(n1, n2);
+
+                                            };
+
+                                            try {
+                                                console.log(cbNew2(3, 5, mul));
+                                            } catch (e) {
+                                                console.error(e);
+                                                console.error(e.name + ': ' + e.message);
+                                            }
+
+
+                                            console.log("Callback ananymus function");
+                                            const divider = (a, b) => {
+                                                return a / b;
+                                            };
+
+                                            var cbNew3 = function (n1, n2, callback) {
+                                                if (isNaN(n1) || typeof n2 !== 'number') {
+                                                    throw 'Parameter is not a number!';
+                                                } else if (typeof callback !== 'function') {
+                                                    throw 'Callback is not a function!';
+                                                }
+                                                return "Result from the two numbers: " + n1 + "/" + n2 + "=" + callback(n1, n2);
+
+                                            };
+
+                                            try {
+                                                console.log(cbNew3(4, 2, divider));
+                                            } catch (e) {
+                                                console.error(e);
+                                                console.error(e.name + ': ' + e.message);
+                                            }
+
+
+                                            console.log("Callback with array: filter");
+                                            var nameArray = ["Lars", "Jan", "Peter", "Bo", "Frederik"];
+                                            console.log(nameArray);
+
+                                            var convertArray = function (array, callback) {
+                                                if (!Array.isArray(array)) {
+                                                    throw 'Parameter is not an array!';
+                                                } else if (typeof callback !== 'function') {
+                                                    throw 'Callback is not a function!';
+                                                }
+                                                return callback(array);
+                                            };
+
+                                            var filterArray = array => {
+                                                let newArray = array.filter(currentElement => currentElement.length <= 3);
+                                                return newArray;
+                                            };
+
+                                            try {
+                                                console.log(convertArray(nameArray, filterArray));
+                                            } catch (e) {
+                                                console.error(e);
+                                                console.error(e.name + ': ' + e.message);
+                                            }
+
+
+                                            console.log("Callback with array: forEach");
+                                            var nameArray1 = ["Lars", "Jan", "Peter", "Bo", "Frederik"];
+                                            console.log(nameArray);
+                                            nameArray1.forEach(currentElement => console.log(currentElement));
+
+                                            var convertArray1 = function (array, callback) {
+                                                if (!Array.isArray(array)) {
+                                                    throw 'Parameter is not an array!';
+                                                } else if (typeof callback !== 'function') {
+                                                    throw 'Callback is not a function!';
+                                                }
+                                                return callback(array);
+                                            };
+
+                                            var forEachArray = array => {
+                                                array.forEach(currentElement => console.log(currentElement));
+                                            };
+
+                                            try {
+                                                convertArray1(nameArray1, forEachArray);
+                                            } catch (e) {
+                                                console.error(e);
+                                                console.error(e.name + ': ' + e.message);
+                                            }
+
+
+                                            console.log("Map array");
+                                            var nameArray2 = ["Lars", "Jan", "Peter", "Bo", "Frederik"];
+                                            const upperCaseArray = nameArray2.map(currentElement => currentElement.toUpperCase());
+                                            console.log(upperCaseArray);
+
+
+                                            console.log("HTML array");
+                                            var nameArray = ["Lars", "Peter", "Jan", "Ian"];
+                                            var html = nameArray.join('</li><li>');
+                                            console.log(html);
+                                            var htmlArray = ['<ul><li>', html, '</li><ul>'];
+                                            console.log(htmlArray);
+                                            htmlArray = htmlArray.join('');
+                                            console.log(htmlArray);
+
+
+
+                                            console.log("Car array");
+                                            var cars = [
+                                                {id: 1, year: 1997, make: 'Ford', model: 'E350', price: 3000},
+                                                {id: 2, year: 1999, make: 'Chevy', model: 'Venture', price: 4900},
+                                                {id: 3, year: 2000, make: 'Chevy', model: 'Venture', price: 5000},
+                                                {id: 4, year: 1996, make: 'Jeep', model: 'Grand Cherokee', price: 4799}, {id: 5, year: 2005, make: 'Volvo', model: 'V70', price: 44799}
+                                            ];
+                                            console.log(cars);
+                                            console.log(cars.filter(currentElement => currentElement.year > 1999));
+                                            console.log(cars.filter(currentElement => currentElement.make === 'Volvo'));
+                                            console.log(cars.filter(currentElement => currentElement.price < 5000));
+
+
+                                            console.log("Make INSERT array");
+
+                                            var cars1 = [
+                                                {id: 1, year: 1997, make: 'Ford', model: 'E350', price: 3000},
+                                                {id: 2, year: 1999, make: 'Chevy', model: 'Venture', price: 4900},
+                                                {id: 3, year: 2000, make: 'Chevy', model: 'Venture', price: 5000},
+                                                {id: 4, year: 1996, make: 'Jeep', model: 'Grand Cherokee', price: 4799}, {id: 5, year: 2005, make: 'Volvo', model: 'V70', price: 44799}
+                                            ];
+
+
+                                            console.log("--> INSERT object");
+                                            var makeInsertFromObject = function (object) {
+                                                if (typeof object !== 'object') {
+                                                    throw 'Parameter is not an object!';
+                                                }
+                                                return "INSERT INTO cars (id,year,make,model,price) VALUES (" + object.id + "," + object.year + "," + `'${object.make}'` + "," + `'${object.model}'` + "," + object.price + ");";
+                                            };
+
+                                            var mapANewArray = array => {
+                                                let newMapedArray = array.map(currentElement => [currentElement.id, currentElement.year, `'${currentElement.make}'`, `'${currentElement.model}'`, currentElement.price]);
+                                                return newMapedArray;
+                                            };
+                                            console.log(mapANewArray(cars1));
+                                            console.log(cars1[0]);
+                                            console.log(makeInsertFromObject(cars1[0]));
+
+
+                                            console.log("--> INSERT array");
+                                            var makeInsertFromArray = function (array, callback) {
+                                                if (!Array.isArray(array)) {
+                                                    throw 'Parameter is not an array!';
+                                                } else if (typeof callback !== 'function') {
+                                                    throw 'Callback is not a function!';
+                                                }
+
+                                                const mappedArray = callback(array);
+
+                                                mappedArray.forEach(currentElement => console.log(currentElement));
+
+                                            };
+
+                                            var mapANewArray1 = array => {
+                                                let newMapedArray = array.map(array => "INSERT INTO cars (id,year,make,model,price) VALUES (" + array.id + "," + array.year + "," + `'${array.make}'` + "," + `'${array.model}'` + "," + array.price + ");");
+                                                return newMapedArray;
+                                            };
+                                            console.log(mapANewArray1(cars1));
+                                            makeInsertFromArray(cars1, mapANewArray1);
+
+
+
+
+                                            console.log("Asynchronous Callbacks");
+                                            var msgPrinter = function (msg, delay) {
+                                                setTimeout(function () {
+                                                    console.log(msg);
+                                                }, delay);
+                                            };
+                                            console.log("aaaaaaaaaa"); //Will execute first
+                                            msgPrinter("bbbbbbbbbb", 2000); //Will wait 2 seconds
+                                            console.log("dddddddddd"); //Will execute second
+                                            msgPrinter("eeeeeeeeee", 1000); //Will wait 1 seconds
+                                            console.log("ffffffffff"); //Will execute third
+
+
+
+                                            console.log("constructor functions");
+
+                                            function Person(name) {
+                                                this.name = name;
+                                                console.log("Name: " + this.name);
+                                                setTimeout(function () {
+                                                    console.log("Hi " + this.name); //Explain this - it takes the "name" from the function scope. We need to use super or bind()???
+                                                }, 2000);
+                                            }
+                                            Person("Kurt Wonnegut"); //This calls the function 
+                                            Person("Arik"); //This calls the function 
+                                            console.log("I'm global: " + name); //Explain this - This is the last "name" set in the memory for the PERSON instance
+
+                    //***************
+                                            var p = new Person("Kurt Wonnegut"); //Create an instance using the constructor function 
+                                            console.log("I'm global: " + name); //The instance does NOT set the global state/name
+
+                                            console.log("Access 'this'");
+                                            function Person1(name) {
+                                                this.name = name;
+                                                var self = this; //var cab be used cross scoop
+                                                console.log("Name: " + this.name);
+                                                setTimeout(function () {
+                                                    console.log("Hi " + self.name);
+                                                }, 2000);
+                                            }
+                                            Person1("Niels"); //This calls the function 
+
+                                            console.log("Access 'bind()'");
+                                            function Person2(name1) {
+                                                this.name1 = name1;
+                                                console.log("Name: " + this.name1);
+                                                setTimeout(function () {
+                                                    console.log("Hi " + this.name1);
+                                                }.bind(this), 2000); //We bind the function to "this", it's parent 
+                                            }
+                                            Person2("James"); //This calls the function 
+
+
+                                            console.log("Bind");
+                                            var greeter = function () {
+                                                console.log(this.message);
+                                            };
+                                            var comp1 = {message: "Hello World"};
+                                            var comp2 = {message: "Hi"};
+                                            var g1 = greeter.bind(comp1);//We can store a reference, with a specific “this” to use 
+                                            var g2 = greeter.bind(comp2);//And here another “this”
+                                            setTimeout(g1, 500);
+                                            setTimeout(g2, 1000);
+
+
+                                            console.log("Object1");
+                                            var object = {
+                                                'firstname': 'Arik',
+                                                'birthday': '28-04-198',
+                                                'age': 40,
+                                                'hobby': 'programming'
+                                            };
+                                            console.log(object);
+
+                                            for (prop in object) {
+                                                console.log(prop, object[prop]);
+                                            }
+
+
+                                            console.log("Object2");
+                                            class Object {
+                                                constructor(firstname, birthday, age, hobby) {
+                                                    this.firstname = firstname;
+                                                    this.birthday = birthday;
+                                                    this.age = age;
+                                                    this.hobby = hobby;
+                                                }
+                                            }
+                                            var object1 = new Object('Arik', '28-04-1980', 40, 'Programming');
+                                            console.log(object1);
+
+                                            for (prop in object1) {
+                                                console.log(prop, object1[prop]);
+                                            }
+
+
+                                            console.log("Delete property from object");
+                                            var object2 = new Object('TestUser', '01-01-2000', 40, 'Delete this');
+                                            console.log(object2);
+                                            console.log(object2.hobby);
+                                            delete object2.hobby;
+                                            console.log(object2);
+
+                                            console.log("Adding property to object");
+                                            object2.nationality = "English";
+                                            console.log(object2);
+
+
+                                            console.log("Cunstructor");
+                                            class PersonNew {
+                                                constructor(firstName, lastName, age) {
+                                                    this.firstName = firstName;
+                                                    this.lastName = lastName;
+                                                    this.age = age;
+                                                }
+                                            }
+                                            var person = new PersonNew('FirstName', 'LastName', 40);
+                                            console.log(person);
+
+                                            for (prop in person) {
+                                                console.log(prop, person[prop]);
+                                            }
+
+
+
+
+
+                                            console.log("Module Pattern");
+                                            function EmployeeDetails() {
+                                                let nameEmployee = "Mayank";
+                                                let age = 30;
+                                                let designation = "Developer";
+                                                const setName = function (nameEmployee) {
+                                                    this.nameEmployee = nameEmployee;
+                                                };
+                                                const setAge = function (age) {
+                                                    this.age = age;
+                                                };
+
+                                                const getInfo = function (nameEmployee, age) {
+                                                    this.nameEmployee = nameEmployee;
+                                                    this.age = age;
+
+                                                    return `${this.nameEmployee}, ${this.age}`;
+                                                };
+
+                                                const getInfo2 = function (newEmployee) {
+                                                    console.log(`${newEmployee.nameEmployee}, ${newEmployee.age}`);
+                                                };
+
+                                                return {
+                                                    nameEmployee: nameEmployee,
+                                                    age: age,
+                                                    designation: designation,
+                                                    setName: setName,
+                                                    setAge: setAge,
+                                                    getInfo: getInfo,
+                                                    getInfo2: getInfo2
+                                                };
+                                            }
+                                            ;
+
+                                            var newEmployee = EmployeeDetails();
+                                            console.log(newEmployee);
+                                            console.log(newEmployee.nameEmployee);
+                                            console.log(newEmployee.age);
+                                            newEmployee.setName("John");
+                                            newEmployee.setAge(98);
+                                            console.log(newEmployee);
+                                            console.log(newEmployee.nameEmployee);
+                                            console.log(newEmployee.age);
+                                            console.log(newEmployee.getInfo(newEmployee.nameEmployee, newEmployee.age));
+                                            newEmployee.getInfo2(newEmployee);
+
+                                        </script>
+
+                                        </div>
+                                        <div class="col-sm-2">
+
+                                        </div>
+                                        </div>
+                                        </div>
+
+
+
+
+
+
+                                        <!-- Optional JavaScript; choose one of the two! -->
+
+                                        <!-- Option 1: Bootstrap Bundle with Popper -->
+                                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+                                        <!-- Option 2: Separate Popper and Bootstrap JS -->
+                                        <!--
+                                        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+                                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+                                        -->
+                                        </body>
+                                        </html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            #div1 {
+                /*background-color: blue;*/
+                width: 200px;
+                height: 100px
+            }
+            #div2 {
+                /*background-color: red;*/
+                width: 200px;
+                height: 100px
+            }
+            #div3 {
+                /*background-color: green;*/
+                width: 200px;
+                height: 100px
+            }
+        </style>
+    </head>
+    <body>
+        <div id="div1" style="background-color: blue;">
+            Første
+        </div>
+        <div id="div2" style="background-color: red;">
+            Anden
+        </div>
+        <div id="div3" style="background-color: green;">
+            Tredje
+        </div>
+
+        <button onclick="getTagName()">Tekst fra 2. div</button>
+        <p id="insertHere"></p>
+
+        <br>
+        <br>
+        <button onclick="changeColor()">Skift 2. div farve fra rød til gul</button>
+        <p id="insertHere1"></p>
+        <p id="insertHere2"></p>
+
+        <script>
+            console.log("Get elements by tagName");
+            var getTagName = function () {
+                var x = document.getElementsByTagName("DIV");
+                for (prop in x) {
+                    console.log(prop, x[prop]);
+                }
+                document.getElementById("insertHere").innerHTML = x[1].innerHTML; //Get the text from x[1] and inserts it to <p> id=insertHere
+            };
+
+            console.log("Get elements by tagName and change color");
+            var changeColor = function () {
+                var x = document.getElementsByTagName("DIV");
+//                for (prop in x) {
+//                    console.log(prop, x[prop]);
+//                }
+                console.log("Farven før skiftet: " + document.getElementById("div2").style.backgroundColor);
+                document.getElementById("insertHere1").innerHTML = "Farven var: " + document.getElementById("div2").style.backgroundColor;
+
+                document.getElementById("div2").style.backgroundColor = "yellow"; //Change color on id=div2 from fed to yellow 
+                console.log("Farven efter skiftet: " + document.getElementById("div2").style.backgroundColor);
+                document.getElementById("insertHere2").innerHTML = "Men nu er farven: " + document.getElementById("div2").style.backgroundColor;
+            };
+
+        </script>
+    </body>
+</html>

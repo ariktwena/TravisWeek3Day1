@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .mydiv {width: 25px; height: 25px;background-color:yellow; margin:1px;}
+        </style>
+    </head>
+    <body>
+        <br>
+                    <h1 style="text-align: center">Uge 3 Flow 1</h1>
+                    <br>
+                    <p style="text-align: center">Klik på de gule felter, og husk at kigge i konsollen på de to første :)</p>
+                    <br>
+                    <br>
+                    
+        <div id="div1" class="mydiv" onclick="writeMessage(this.id)">
+
+        </div>
+        <div id="div2" class="mydiv" onclick="writeMessage(this.id)">
+
+        </div>
+
+        <div id="outer">
+            <div id="div3" class="mydiv">
+
+            </div>
+            <div id="div4" class="mydiv">
+
+            </div>
+            <div id="div5" class="mydiv">
+
+            </div>
+            <div id="div6" class="mydiv">
+
+            </div>
+            <div id="div7" class="mydiv">
+
+            </div>
+            <div id="div8" class="mydiv">
+
+            </div>
+            <div id="div9" class="mydiv">
+
+            </div>
+            <div id="div10" class="mydiv">
+
+            </div>
+            <div id="div11" class="mydiv">
+
+            </div>
+            <div id="div12" class="mydiv">
+
+            </div>
+        </div>
+
+        <p id="textHere">
+            
+        </p>
+        <script>
+            var writeMessage = function (elementID) {
+                console.log("Hi from " + elementID);
+            };
+            
+            var showEvent = function (event) { //The click is the event
+                var target = event.target;
+                console.log(event);
+                console.log(target);
+                
+                var divID = target.id;
+                
+                document.getElementById("textHere").innerText = "Clicked div ID: " + divID;//Insert the target text to the <p> tag
+            };
+            
+            document.getElementById("outer").addEventListener("click", showEvent); //The click is the event
+        </script>
+    </body>
+</html>
