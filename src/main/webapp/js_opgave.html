@@ -21,100 +21,99 @@
                     <h1 style="text-align: center">JS opgave</h1>
                     <br>
                     <p style="text-align: center">Husk at åbne konsollen og tjek resultatet :)</p>
-                    
-                    <p>
-                       console.log("Hello World, i Know how to count");<br><br>
-                       
 
-[1,2,3,4].forEach(n=>console.log(n));<br><br>
+                       <xmp>             
+console.log("Hello World, i Know how to count");
+                           
+[1,2,3,4].forEach(n=>console.log(n));
 
-console.log("Opgave 1");<br>
-var boys = ["Peter", "lars", "Ole"]; <br>
-var girls = ["Janne", "hanne", "Sanne"];<br>
+console.log("Opgave 1");
+var boys = ["Peter", "lars", "Ole"]; 
+var girls = ["Janne", "hanne", "Sanne"];
 
-console.log(boys);<br>
-console.log(girls);<br><br>
+console.log(boys);
+console.log(girls);
 
-console.log("Opgave 2");<br>
-var all = boys.concat(girls);<br>
-console.log(all);<br><br>
+console.log("Opgave 2");
+var all = boys.concat(girls);
+console.log(all);
 
 
-console.log("Opgave 3");<br>
-var string1 = all.join(",");<br>
-console.log(string1);<br>
-var string2 = all.join("-");<br>
-console.log(string2);<br><br>
+console.log("Opgave 3");
+var string1 = all.join(",");
+console.log(string1);
+var string2 = all.join("-");
+console.log(string2);
 
-console.log("Opgave 4");<br>
-all.push("Lone", "Gitte");<br>
-console.log(all);<br>
-console.log(all[0]);<br><br>
+console.log("Opgave 4");
+all.push("Lone", "Gitte");
+console.log(all);
+console.log(all[0]);
 
-console.log("Opgave 5");<br>
-all.unshift("Hans", "Kurt");<br>
-console.log(all);<br>
-console.log(all[0]);<br><br>
+console.log("Opgave 5");
+all.unshift("Hans", "Kurt");
+console.log(all);
+console.log(all[0]);
 
-console.log("Opgave 6");<br>
-//console.log(all.shift()); //For at se det element som man fjerner. Men det bliver også fjernet på samme tid<br>
-all.shift();<br>
-console.log(all);<br><br>
+console.log("Opgave 6");
+//console.log(all.shift()); //For at se det element som man fjerner. Men det bliver også fjernet på samme tid
+all.shift();
+console.log(all);
 
-console.log("Opgave 7");<br>
-//console.log(all.pop()); //For at se det element som man fjerner. Men det bliver også fjernet på samme tid<br>
-all.pop();<br>
-console.log(all);<br><br>
+console.log("Opgave 7");
+//console.log(all.pop()); //For at se det element som man fjerner. Men det bliver også fjernet på samme tid
+all.pop();
+console.log(all);
 
-console.log("Opgave 8");<br>
-let removed = all.splice(3, 2); //Remove 2 elements fra index 3 (Ole and jane index 4)<br>
-console.log(removed); // The removed ellemnts<br>
-console.log(all); //The array with the removed elements<br><br>
+console.log("Opgave 8");
+let removed = all.splice(3, 2); //Remove 2 elements fra index 3 (Ole and jane index 4)
+console.log(removed); // The removed ellemnts
+console.log(all); //The array with the removed elements
 
-console.log("Opgave 9");<br>
-all.reverse();<br>
-console.log(all);<br><br>
+console.log("Opgave 9");
+all.reverse();
+console.log(all);
 
-console.log("Opgave 10");<br>
-all.sort();<br>
-console.log(all);<br><br>
+console.log("Opgave 10");
+all.sort();
+console.log(all);
 
-console.log("Opgave 11");<br>
-all.sort((a,b) => {<br>
-    return a.toLowerCase().localeCompare(b.toLowerCase());<br>
-});<br>
-console.log(all);<br><br>
+console.log("Opgave 11");
+all.sort((a,b) => {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+});
+console.log(all);
 
-console.log("Opgave 12");<br>
-let newMapArray = all.map(curentElement => {<br>
-    return curentElement.toUpperCase();<br>
-});<br>
-console.log(newMapArray);<br><br>
+console.log("Opgave 12");
+let newMapArray = all.map(curentElement => {
+    return curentElement.toUpperCase();
+});
+console.log(newMapArray);
 
-console.log("Opgave 13");<br>
-let newFilterArray1 = all.filter(currentElement => {<br>
-    if(currentElement.charAt(0) === "L" || currentElement.charAt(0) === "l"){<br>
-        return currentElement;<br>
-    }<br>
-});<br>
-console.log(newFilterArray1);<br><br>
+console.log("Opgave 13");
+let newFilterArray1 = all.filter(currentElement => {
+    if(currentElement.charAt(0) === "L" || currentElement.charAt(0) === "l"){
+        return currentElement;
+    }
+});
+console.log(newFilterArray1);
 
-let newFilterArray2 = all.filter(currentElement => currentElement.charAt(0) === "L" || currentElement.charAt(0) === "l");<br>
-console.log(newFilterArray2);<br><br>
+let newFilterArray2 = all.filter(currentElement => currentElement.charAt(0) === "L" || currentElement.charAt(0) === "l");
+console.log(newFilterArray2);
 
-console.log("Opgave 14");<br>
-let newConcatArray1 = [...boys, ...girls];<br>
-console.log(newConcatArray1);<br><br>
+console.log("Opgave 14");
+let newConcatArray1 = [...boys, ...girls];
+console.log(newConcatArray1);
 
-console.log("Opgave 15");<br>
-const newBoysAray = [...boys, "Hans", "Kurt"];<br>
-const newGirlsArray = [...girls, "Lone", "Gitte"];<br>
-let newConcatArray2 = [...newBoysAray, ...newGirlsArray];<br>
-console.log(newConcatArray2);<br>
+console.log("Opgave 15");
+const newBoysAray = [...boys, "Hans", "Kurt"];
+const newGirlsArray = [...girls, "Lone", "Gitte"];
+let newConcatArray2 = [...newBoysAray, ...newGirlsArray];
+console.log(newConcatArray2);
 
 
  
-                    </p>
+                    </xmp>
                     
                     <script>
                         console.log("Hello World, i Know how to count");
